@@ -1,0 +1,49 @@
+paths:
+  raw_data: "data/raw/online_retail_II.xlsx"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+
+sheets:
+  - "Year 2009-2010"
+  - "Year 2010-2011"
+
+cleaning:
+  price_zero_or_negative_action: "flag_and_exclude"   # documented rule, see clean.py
+  duplicate_subset:
+    - "Invoice"
+    - "StockCode"
+    - "CustomerID"
+    - "Quantity"
+    - "InvoiceDate"
+    - "Price"
+  outlier_iqr_multiplier: 1.5
+  non_product_stockcodes:
+    - "POST"      # postage
+    - "D"         # discount
+    - "DOT"       # dot com postage
+    - "M"         # manual
+    - "BANK CHARGES"
+    - "PADS"
+    - "CRUK"      # charity donation
+    - "C2"        # carriage
+
+validation:
+  required_columns:
+    - "Invoice"
+    - "StockCode"
+    - "Description"
+    - "Quantity"
+    - "InvoiceDate"
+    - "Price"
+    - "Customer ID"
+    - "Country"
+  max_null_rate:
+    Description: 0.02
+    Customer ID: 0.30   # known ~25% missing per UCI documentation
+  date_range:
+    min: "2009-12-01"
+    max: "2011-12-09"
+
+features:
+  churn_definition_days: 90
+  prediction_cutoff_date: null   # set at runtime: max(InvoiceDate) - churn_definition_days
