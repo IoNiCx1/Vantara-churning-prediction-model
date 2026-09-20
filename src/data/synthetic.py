@@ -46,5 +46,12 @@ ARCHETYPE:List[Archetype] = [
     Archetype("occasional_low_value",60,1.2,.04,.3,(),.05,.20),
     Archetype("discounted_hunter",35,1,.06,.8,(),.04,.10),
     Archetype("seasonal_gift_shopper",90,.5,.08,.15,(10,11,12),.02,.10),
-    Archetype("at_risk_departing",)
+    Archetype("at_risk_departing",25,.9,.10,.25,(),.18,.10),
+    Archetype("new_customers",35,1,.05,.2,(),.05,.05),
+
 ]
+def _assign_archetypes(new_customers:int,rng:np.random.Generator)-> List[Archetype]:
+    shares = np.array([a.share for a in ARCHETYPE])
+    shares = shares/shares.sum()
+    idx =rng.choice(len(ARCHETYPES),size = n_customers,p = shares)
+    return [ARCHETYPE[i] for i in idx]
