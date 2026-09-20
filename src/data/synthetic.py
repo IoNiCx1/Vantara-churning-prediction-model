@@ -42,5 +42,9 @@ class Archetype:
 
 ARCHETYPE:List[Archetype] = [
     Archetype("loyal_high_value",14,.6,.03,.1,(),.01,.15),
-    Archetype("steady_mid_value",28,.8,.05,.2,(),)
+    Archetype("steady_mid_value",28,.8,.05,.2,(),),
+    Archetype("occasional_low_value",60,1.2,.04,.3,(),.05,.20),
+    Archetype("discounted_hunter",35,1,.06,.8,(),.04,.10),
+    Archetype("seasonal_gift_shopper",90,.5,.08,.15,(10,11,12),.02,.10),
+    Archetype("at_risk_departing",)
 ]

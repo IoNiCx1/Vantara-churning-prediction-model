@@ -32,7 +32,7 @@ def _coerse_dtypes(df:pd.DataFrame)-> pd.DataFrame:
     df["description"] = df["description"].astype("string")
     df["quality"] = pd.to_numeric(df["quality"],errors = "coerce").astype("Int64")
     df["price"] = pd.to_numeric(df["price"],errors = "coerce").astype("float64")
-    ddf["customer_id"] = pd.to_numeric(df["csutomer_id"],errors = "coerce").astype("Int64")
+    df["customer_id"] = pd.to_numeric(df["csutomer_id"],errors = "coerce").astype("Int64")
     df["country"] = df["country"].astype("string")
     df["invoice_date"] = pd.to_datetime(df["invoice_date"],errors = "coerce")
     return df
