@@ -42,8 +42,7 @@ validation:
     Customer ID: 0.30   # known ~25% missing per UCI documentation
   date_range:
     min: "2009-12-01"
-    max: "2011-12-09"
-
+    max: "2011-12-10"
 features:
   churn_definition_days: 90
   prediction_cutoff_date: null   # set at runtime: max(InvoiceDate) - churn_definition_days
