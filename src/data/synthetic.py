@@ -223,4 +223,4 @@ def write_synthetic_workbook(path: str, **kwargs) -> None:
 
 if __name__ == "__main__":
     write_synthetic_workbook("data/raw/online_retail_II.xlsx", n_customers=500)
-    print("Synthetic dataset written to data/raw/online_retail_II.xlsx")
+    print("Synthetic dataset written to data/raw/online_retail_II.xlsx") 
