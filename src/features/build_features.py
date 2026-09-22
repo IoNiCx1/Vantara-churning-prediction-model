@@ -111,7 +111,11 @@ def compute_purchase_interval_variance(df: pd.DataFrame, cutoff_date: pd.Timesta
 
 def compute_seasonal_concentration(df: pd.DataFrame, cutoff_date: pd.Timestamp) -> pd.Series:
     """Concentration of spend across calendar months (0 = evenly spread,
-    1 = all spend in a single month)."""
+    1 = all spend in a single month). Customers whose net spend sums to
+    zero (e.g. a purchase fully offset by a return) get 0.0 rather than
+    a division-by-zero — there's no meaningful "concentration" to report
+    for a customer with no net spend.
+    """
     hist = _customer_level_rows(df, cutoff_date)
     valid_sales = hist.loc[~hist["is_invalid_price"]].copy()
     valid_sales["line_total"] = valid_sales["quantity"] * valid_sales["price"]
@@ -119,7 +123,12 @@ def compute_seasonal_concentration(df: pd.DataFrame, cutoff_date: pd.Timestamp) 
 
     monthly = valid_sales.groupby(["customer_id", "month"])["line_total"].sum()
     totals = monthly.groupby("customer_id").sum()
-    shares_sq = (monthly / totals.reindex(monthly.index.get_level_values("customer_id")).values) ** 2
+
+    aligned_totals = totals.reindex(monthly.index.get_level_values("customer_id")).values
+    with np.errstate(divide="ignore", invalid="ignore"):
+        shares_sq = np.where(aligned_totals == 0, 0.0, (monthly.values / aligned_totals) ** 2)
+    shares_sq = pd.Series(shares_sq, index=monthly.index)
+
     concentration = shares_sq.groupby("customer_id").sum()
     concentration.name = "seasonal_concentration"
     return concentration.fillna(0.0)
