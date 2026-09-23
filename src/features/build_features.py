@@ -8,11 +8,7 @@ import pandas as pd
 
 
 def _customer_level_rows(df: pd.DataFrame, cutoff_date: pd.Timestamp) -> pd.DataFrame:
-    """Rows usable for customer-level modeling as of cutoff_date:
-    strictly before cutoff, has a customer id, and is not a non-product line.
-    Returns (negative quantity) ARE kept deliberately — treated as signal,
-    not dropped.
-    """
+    
     mask = (
         (df["invoice_date"] < cutoff_date)
         & (~df["is_missing_customer_id"])
@@ -95,7 +91,7 @@ def compute_purchase_trend(df: pd.DataFrame, cutoff_date: pd.Timestamp) -> pd.Se
 
 
 def compute_purchase_interval_variance(df: pd.DataFrame, cutoff_date: pd.Timestamp) -> pd.Series:
-    """Variance of days between consecutive purchases."""
+    
     hist = _customer_level_rows(df, cutoff_date)
     invoice_dates = (
         hist.groupby(["customer_id", "invoice"])["invoice_date"].min().reset_index()
