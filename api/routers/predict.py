@@ -128,8 +128,7 @@ def predict_single(features: CustomerFeaturesRequest, db: Session = Depends(get_
 
 @router.post("/predict/batch", response_model=BatchPredictionSummary)
 async def predict_batch(file: UploadFile = File(...), db: Session = Depends(get_db)) -> BatchPredictionSummary:
-    """Batch scoring via CSV upload. Expects one row per customer with the
-    same columns as CustomerFeaturesRequest."""
+    
     if not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only CSV files are accepted")
 
@@ -163,7 +162,7 @@ async def predict_batch(file: UploadFile = File(...), db: Session = Depends(get_
 
 @router.get("/model/metadata", response_model=ModelMetadataResponse)
 def model_metadata() -> ModelMetadataResponse:
-    """Model metadata endpoint."""
+    
     metrics_path = MODEL_ARTIFACTS_DIR / "training_metadata.json"
     metrics = {}
     trained_at = None
@@ -183,7 +182,7 @@ def model_metadata() -> ModelMetadataResponse:
 
 @router.get("/health", response_model=HealthResponse)
 def health(db: Session = Depends(get_db)) -> HealthResponse:
-    """Health-check endpoint."""
+    
     model_path = MODEL_ARTIFACTS_DIR / f"{_resolve_model_name()}.joblib"
     db_ok = True
     try:
