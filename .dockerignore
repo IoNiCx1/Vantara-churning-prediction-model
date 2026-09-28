@@ -1,0 +1,27 @@
+# Host virtual environment (wrong Python version, huge, useless in the container)
+.venv/
+venv/
+
+# Version control
+.git/
+.gitignore
+
+# Secrets — never bake into an image
+.env
+
+# Python caches
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Large/generated data — mounted via docker-compose volumes instead
+data/raw/
+data/interim/
+data/processed/
+model_artifacts/
+*.db
+
+# Notebooks and editor files aren't needed at runtime
+notebooks/
+.vscode/
+.ipynb_checkpoints/
